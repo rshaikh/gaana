@@ -1,104 +1,182 @@
-
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html">
+<html>
 <head>
+<meta charset="utf-8">
+<title>Gaana</title>
+<link rel="stylesheet" href="assets/css/jquery-ui.css" />
+<link
+	href="assets/js/thirdparty/jQuery.jPlayer.2.3.0/skin/blue.monday/jplayer.blue.monday.css"
+	rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="assets/css/main.css" />
 
-    <meta charset="utf-8">
-    <title>Gaana</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="cerulean/css/bootstrap.css" media="screen">
-    <link rel="stylesheet" href="cerulean/css/bootswatch.min.css">
-    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-    <script src="cerulean/js/html5shiv.js"></script>
-    <script src="cerulean/js/respond.min.js"></script>
-    <![endif]-->
+<script src="assets/js/class.min.js"></script>
+<script src="assets/js/thirdparty/jquery-1.9.1.min.js"></script>
+<script type="text/javascript"
+	src="assets/js/thirdparty/jQuery.jPlayer.2.3.0/jquery.jplayer.min.js"></script>
+<script type="text/javascript"
+	src="assets/js/thirdparty/jQuery.jPlayer.2.3.0/add-on/jplayer.playlist.min.js"></script>
 
-    <script src="cerulean/js/jquery-1.10.2.min.js"></script>
+<script src="assets/js/thirdparty/jquery-ui.min.js"></script>
+<script src="assets/js/thirdparty/knockout-2.1.0.min.js"></script>
+<script src="assets/js/com/gaana/utils/ajaxutil.js"></script>
+<script src="assets/js/com/gaana/utils/scrolldetector.js"></script>
+<script src="assets/js/com/gaana/handler/suggestionhandler.js"></script>
+<script src="assets/js/com/gaana/model/gaanamodel.js"></script>
+<script src="assets/js/init.js"></script>
 </head>
-<body style="" data-ember-extension="1">
+<body>
+	<div id="mainWrapper">
+		<header>
+			<a href="#" id="showPlaylist" data-bind="click: showPlaylist" title="show / hide playlist"><img id="playlistIcon" src="assets/images/itunes-playlist.png"/></a>
+			<img id=equilizer src="assets/images/moving-equalizer-animated-gif.gif"/>
+			<h2>Gaana</h2>
+			<h3>Huge Collection of Bollywood Music‎</h3>
+		</header>
 
-<div class="navbar navbar-default navbar-fixed-top">
-    <div class="container">
-        <div class="navbar-header">
-            <a href="../" class="navbar-brand">Gaana</a>
+		<div id="left">
+			<div id="searchBox">
+				<input type="text" id="searchQuery"
+					data-bind="{value: searchQuery, valueUpdate: 'afterkeydown', event:{'keyup':function(){loadSuggestion(this)}}}" />
+				<button data-bind="click: searchSongs">Search</button>
+				<<-- Type artist, song, album name and click here.
+			</div>
+			<div id="dataGrid">
+				<div data-bind="foreach: songs">
+					<div class="song-container" data-bind="visible: rights.code == 0">
+						<div class="image-container">
+							<img class="album-art" alt="album_art"
+								data-bind="attr: {src: image}">
+						</div>
+						<div class="controls">
+							<button
+								data-bind="click: function(){$root.addToPlaylistAndPlay($index())}">Play</button>
+							<button
+								data-bind="click: function(){$root.addToPlaylist($index())}">Add
+								to playlist</button>
+							<button data-bind="click: function(){$root.download(media_url)}">Download</button>
+						</div>
+						<div class="song-details">
+							<div>
+								<label>Song:</label><span data-bind="text: song"></span>
+							</div>
+							<div>
+								<label>Album:</label><span data-bind="text: album"></span>
+							</div>
+							<div>
+								<label>Year:</label><span data-bind="text: year"></span>
+							</div>
+							<div>
+								<label>Music:</label><span data-bind="text: music"></span>
+							</div>
+							<div>
+								<label>Singers:</label><span data-bind="text: singers"></span>
+							</div>
+							<div>
+								<label>Starring:</label><span data-bind="text: starring"></span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<button id="load-more"
+				data-bind="click: loadMoreSongs, visible: isFirstPageLoaded()">Load
+				more songs</button>
+		</div>
+		<div id="right">
+			<!-- <div class="controls">
+		<button data-bind="click: function(){gaanaplayer.prev()}">Prev</button>
+		<button data-bind="click: function(){gaanaplayer.toggle()}">Play/Pause</button>
+		<button data-bind="click: function(){gaanaplayer.next()}">Next</button>
+		<button data-bind="click: function(){gaanaplayer.clear()}">Clear</button>
+		<span data-bind="text:gaanaplayer.currentDuration">--:--</span>/<span data-bind="text:gaanaplayer.totalDuration">--:--</span>
+	</div>
+	<div class="playlist">
+		<div data-bind="foreach: gaanaplayer.playlist" class="playlist-container">
+			<div class="playlist-item" data-bind="click: function(){$root.gaanaplayer.playSelectedTrack($index())},css: {'current-track' : $root.gaanaplayer.currentTrackNo() == $index()}">
+				</span><span data-bind="text: song"></span>
+			</div>
+		</div>
+	</div>
+	<audio id='audio_core'>-->
+			<!-- 
+		<source src="song.mp3" type="audio/mp3" />
+		Your browser does not support the audio tag.
+	</audio> 
+ -->
 
-        </div>
 
-    </div>
-</div>
+			<!-- jPlayer code  -->
 
-<div class="container">
-    You are now ready to build the AngularJS phonecat app. In this step, you will become familiar with the most important source code files, learn how to start the development servers bundled with angular-seed, and run the application in the browser.
+			<div id="jquery_jplayer_1" class="jp-jplayer"></div>
 
-    In angular-phonecat directory, run this command:
+			<div id="jp_container_1" class="jp-audio">
+				<div class="jp-type-playlist">
+					<div class="jp-playlist">
+						<ul>
+							<li></li>
+						</ul>
+					</div>
+					<div class="jp-gui jp-interface">
+						<ul class="jp-controls">
+							<li><a href="javascript:;" class="jp-previous" tabindex="1">previous</a></li>
+							<li><a href="javascript:;" class="jp-play" tabindex="1">play</a></li>
+							<li><a href="javascript:;" class="jp-pause" tabindex="1">pause</a></li>
+							<li><a href="javascript:;" class="jp-next" tabindex="1">next</a></li>
+							<li><a href="javascript:;" class="jp-stop" tabindex="1">stop</a></li>
+							<li><a href="javascript:;" class="jp-mute" tabindex="1"
+								title="mute">mute</a></li>
+							<li><a href="javascript:;" class="jp-unmute" tabindex="1"
+								title="unmute">unmute</a></li>
+							<li><a href="javascript:;" class="jp-volume-max"
+								tabindex="1" title="max volume">max volume</a></li>
+						</ul>
+						<div class="jp-progress">
+							<div class="jp-seek-bar">
+								<div class="jp-play-bar"></div>
 
-    git checkout -f step-0
-    This resets your workspace to step 0 of the tutorial app.
+							</div>
+						</div>
+						<div class="jp-volume-bar">
+							<div class="jp-volume-bar-value"></div>
+						</div>
+						<div class="jp-current-time"></div>
+						<div class="jp-duration"></div>
+						<ul class="jp-toggles">
+							<li><a href="javascript:;" class="jp-shuffle" tabindex="1"
+								title="shuffle">shuffle</a></li>
+							<li><a href="javascript:;" class="jp-shuffle-off"
+								tabindex="1" title="shuffle off">shuffle off</a></li>
+							<li><a href="javascript:;" class="jp-repeat" tabindex="1"
+								title="repeat">repeat</a></li>
+							<li><a href="javascript:;" class="jp-repeat-off"
+								tabindex="1" title="repeat off">repeat off</a></li>
+						</ul>
+					</div>
+					<!-- <div class="jp-playlist">
+						<ul>
+							<li></li>
+						</ul>
+					</div> -->
+					<div class="jp-no-solution">
+						<span>Update Required</span> To play the media you will need to
+						either update your browser to a recent version or update your <a
+							href="http://get.adobe.com/flashplayer/" target="_blank">Flash
+							plugin</a>.
+					</div>
+				</div>
+			</div>
+		</div>
+		<img class="loading" alt="loading..." src="assets/images/loading.gif">
+	</div>
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-    You must repeat this for every future step in the tutorial and change the number to the number of the step you are on. This will cause any changes you made within your working directory to be lost.
-
-    If you haven't already done so you need to install the dependencies by running:
-
-    npm install
-    To see the app running in a browser, open a separate terminal/command line tab or window, then run npm start to start the web server. Now, open a browser window for the app and navigate to http://localhost:8000/app/index.html
-
-    You can now see the page in your browser. It's nYou are now ready to build the AngularJS phonecat app. In this step, you will become familiar with the most important source code files, learn how to start the development servers bundled with angular-seed, and run the application in the browser.
-
-    In angular-phonecat directory, run this command:
-
-    git checkout -f step-0
-    This resets your workspace to step 0 of the tutorial app.
-
-    You must repeat this for every future step in the tutorial and change the number to the number of the step you are on. This will cause any changes you made within your working directory to be lost.
-
-    If you haven't already done so you need to install the dependencies by running:
-
-    npm install
-    To see the app running in a browser, open a separate terminal/command line tab or window, then run npm start to start the web server. Now, open a browser window for the app and navigate to http://localhost:8000/app/index.html
-
-    You can now see the page in your browser. It's nYou are now ready to build the AngularJS phonecat app. In this step, you will become familiar with the most important source code files, learn how to start the development servers bundled with angular-seed, and run the application in the browser.
-
-    In angular-phonecat directory, run this command:
-
-    git checkout -f step-0
-    This resets your workspace to step 0 of the tutorial app.
-
-    You must repeat this for every future step in the tutorial and change the number to the number of the step you are on. This will cause any changes you made within your working directory to be lost.
-
-    If you haven't already done so you need to install the dependencies by running:
-
-    npm install
-    To see the app running in a browser, open a separate terminal/command line tab or window, then run npm start to start the web server. Now, open a browser window for the app and navigate to http://localhost:8000/app/index.html
-
-    You can now see the page in your browser. It's n
-    <div class="row">
-        <h5>test</h5>
-        <div class="col-lg-12">
-        </div>
-    </div>
-</div>
-<div id="loading" class="modal bs-example-modal-sm fade" tabindex="-1" role="dialog"
-     aria-labelledby="mySmallModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-sm">
-        <div id="loading-id" class="modal-content">
-            <div style="text-align: center">
-                <img src="images/loading.gif" height="100px" width="100px"/>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="navbar navbar-default navbar-fixed-bottom">
-    <div class="container">
-        <div class="navbar-header">
-            <a href="../" class="navbar-brand">Player</a>
-            <a href="../" class="navbar-brand">Search</a>
-        </div>
-    </div>
-</div>
-
-<script src="cerulean/js/bootstrap.min.js"></script>
-<script src="cerulean/js/bootswatch.js"></script>
-<script src="scripts/loading.js"></script>
+    ga('create', 'UA-43777689-1', 'rashids.in');
+    ga('send', 'pageview');
+</script>
+        <iframe id="cross-domain-hook" src=""/>
 </body>
 </html>

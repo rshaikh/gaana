@@ -1,0 +1,126 @@
+body{
+	font-family: Verdana, Arial, sans-serif;
+	font-size: 13px;
+}
+button{
+	 //border: thin solid;
+}
+header{
+	//position: fixed;
+	padding-left:10px;
+}
+label{
+	font-weight: bold;
+}
+
+.song-container{
+	border-bottom: 1px dotted gray;
+    padding: 15px;
+}
+
+#left {
+	height: 60%;
+	padding-left:10px;
+    //border-top: 1px solid #009be3;
+}
+
+#right{
+	/*border: 1px dotted gray;
+	width: 30% */
+}
+
+.controls{
+	float: right;
+    margin-top: 12px;
+}
+
+#load-more{
+    width: 100%;
+    display: none;
+}
+
+.playlist{
+	margin-top: 50px;
+}
+
+.current-track{
+	background-color: greenyellow;
+}
+
+.playlist-item{
+	cursor: pointer;
+}
+
+.playlist-container{
+	height: 40%;
+	overflow-y: auto;
+	position: absolute;
+	width: 30%;
+	border: 1px dotted gray;
+}
+
+.jp-playlist{
+	height: 13em;
+	overflow-y: auto;
+	display: none;
+}
+
+.image-container{
+	float: left;
+}
+
+.album-art{
+	height: 70px;
+	width: 70px;
+}
+
+.song-details{
+	margin-left: 77px;
+}
+
+#jp_container_1{
+	font-size: 18px;
+	border: none;
+	position:absolute;
+   	bottom:13px;
+   	width: 84%;
+}
+
+.loading{
+	position: fixed;
+    left: 25%;
+    top: 37%;
+    z-index: 1000;
+    display: none;
+}
+
+#mainWrapper {
+	border: 1px solid #D8D8D8;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.65);
+	border-radius: 5px;
+	background-color: #FFF;
+	margin: auto;
+	width: 85%;
+	//min-width: 800px;
+	height: 99%;
+}
+
+#dataGrid{
+	overflow-y: auto;
+	height: 86%;
+}
+
+#showPlaylist{
+	float: right;
+}
+
+#playlistIcon{
+	height: 60px;
+	width: 60px;
+}
+
+#equilizer{
+	//height: 60px;
+	//width: 200px;
+	float: right;
+}
